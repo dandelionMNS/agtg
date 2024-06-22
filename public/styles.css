@@ -1,0 +1,33 @@
+h2{
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.btn{
+    padding: 10px 15px;
+    border: black solid 1px;
+    border-radius: 8px;
+
+    
+    &:hover{
+        cursor: pointer
+    }
+}
+
+.red{
+    background: red;
+    color: white;
+    font-weight: 700;
+    border: none;
+}
+
+.dlt{
+    border-color: #f00;
+    color: #f00;
+
+    &:hover{
+        cursor: pointer;
+        background-color: red;
+        color: white;
+    }
+}
