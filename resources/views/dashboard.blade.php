@@ -14,7 +14,7 @@
 
                     <x-card title="Weekly Duties" route="https://example.com/2" image="./images/card_duty.jpg" />
 
-                    <x-card title="Leave Request" route="https://example.com/3" image="./images/card_leave.jpg" />
+                    <x-card title="Leave Request" route="{{route('leave.index')}}" image="./images/card_leave.jpg" />
                 </div>
             </div>
         </div>

@@ -19,8 +19,7 @@ class UserController extends Controller
     // }
 
     public function addPage(){
-        $add = ' ';
-    return view("users.add" ,compact("add"));
+    return view("users.add" );
     }
 
     public function add(Request $request)
@@ -69,8 +68,6 @@ class UserController extends Controller
         $user->save();
 
         $users = User::all();
-
-
         return redirect()->route('user.details', ['id' => $user, 'users' => $users]);
     }
 
