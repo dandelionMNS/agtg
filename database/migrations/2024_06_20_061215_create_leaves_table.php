@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('type');
+            $table->foreignId('leave_type_id')->constrained('leave_types');
             $table->string('documents')->nullable();
             $table->date('start');
             $table->date('end');
