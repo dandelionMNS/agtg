@@ -20,7 +20,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen" style="background: url('{{ asset('./images/bg.jpg') }}'); background-size: cover;">
+    <div class="min-h-screen" style="background: url('{{ asset('./images/bg.jpeg') }}'); background-size: cover;">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
