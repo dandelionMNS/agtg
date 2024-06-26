@@ -4,22 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $users = User::all();
-        return view("users.index",compact("users"));
-    }  
+        return view("users.index", compact("users"));
+    }
 
-    // public function listTeachers()
-    // {
-    //     $users = User::where('user_type', 'teacher')->get();
-    //     return view("admin.user", compact("users"));
-    // }
-
-    public function addPage(){
-    return view("users.add" );
+    public function addPage()
+    {
+        return view("users.add");
     }
 
     public function add(Request $request)
@@ -38,7 +36,7 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return redirect()->route('user.index', ['users'=> $users]);
+        return redirect()->route('user.index', ['users' => $users]);
     }
 
 
@@ -79,5 +77,18 @@ class UserController extends Controller
         $users = User::all();
         return redirect()->route('user.index');
 
+    }
+    public function monthly_rec($date)
+    {
+        $duties = Duty::whereMonth('date', Carbon::parse($date)->month)
+            ->whereYear('date', Carbon::parse($date)->year)
+            ->get();
+
+        $month = Carbon::parse($date)->month;
+        $year = Carbon::parse($date)->year;
+
+        $pdf = PDF::loadView('duty.pdf_content', compact('duties', 'month', 'year'));
+        $filename = 'monthly_duties_' . Carbon::parse($month)->format('Y-m') . '.pdf';
+        return $pdf->download($filename);
     }
 }

@@ -12,7 +12,7 @@
                     
                     <x-card title="Users Profiles" route="{{route('user.index')}}" image="./images/card_profile.jpg" />
 
-                    <x-card title="Weekly Duties" route="https://example.com/2" image="./images/card_duty.jpg" />
+                    <x-card title="Weekly Duties" route="{{route('duty.index')}}" image="./images/card_duty.jpg" />
 
                     <x-card title="Leave Request" route="{{route('leave.index')}}" image="./images/card_leave.jpg" />
                 </div>

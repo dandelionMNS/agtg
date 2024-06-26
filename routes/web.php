@@ -3,6 +3,7 @@
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DutyController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,9 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/add', [UserController::class, 'addPage'])->middleware(['auth', 'verified'])->name('user.addPage');
     Route::post('/users/added', [UserController::class, 'add'])->middleware(['auth', 'verified'])->name('user.add');
 
-    // Route::get('/user/teachers', [UserController::class, 'listTeachers'])->middleware(['auth', 'verified'])->name('user.teacher');
-
-
     Route::get('/user/{id}', [UserController::class, 'userDetail'])->middleware(['auth', 'verified'])->name('user.details');
     Route::put('/user/{id}/update', [UserController::class, 'userUpdate'])->middleware(['auth', 'verified'])->name('user.update');
     Route::delete('/user/{id}/delete', [UserController::class, 'userDelete'])->middleware(['auth', 'verified'])->name('user.delete');
@@ -44,5 +42,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/leave/{id}/delete', [LeaveController::class, 'delete'])->middleware(['auth', 'verified'])->name('leave.delete');
 }
 
+// Leave Related Routes
+{
+    Route::get('/duty', [DutyController::class, 'index'])->middleware(['auth', 'verified'])->name('duty.index');
+    Route::get('/duty/{date}', [DutyController::class, 'goToDate'])->middleware(['auth', 'verified'])->name('duty.goto');
+    Route::get('/duty/{date}/add', [DutyController::class, 'addPage'])->middleware(['auth', 'verified'])->name('duty.addPage');
+    Route::post('/duty/{date}/added', [DutyController::class, 'add'])->middleware(['auth', 'verified'])->name('duty.add');
 
-require __DIR__.'/auth.php';
+    Route::put('/duty/clock-in/{duty_id}', [DutyController::class, 'clock_in'])->middleware(['auth', 'verified'])->name('duty.clockin');
+    Route::put('/duty/clock-out/{duty_id}', [DutyController::class, 'clock_out'])->middleware(['auth', 'verified'])->name('duty.clockout');
+    Route::delete('/duty/{id}/delete', [DutyController::class, 'delete'])->middleware(['auth', 'verified'])->name('duty.delete');
+}
+
+
+require __DIR__ . '/auth.php';

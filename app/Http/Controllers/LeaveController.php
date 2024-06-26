@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Leave;
-use App\Models\Leave_Type;
+use App\Models\Leave_type;
 use Illuminate\Http\Request;
 
 class LeaveController extends Controller
@@ -16,8 +16,7 @@ class LeaveController extends Controller
 
     public function addPage()
     {
-
-        $leave_types = Leave_Type::all();
+        $leave_types = Leave_type::all();
         return view("leaves.add", compact('leave_types'));
     }
 
@@ -34,16 +33,12 @@ class LeaveController extends Controller
 
         $leaves = Leave::all();
 
-        // Retrieve the auto-incremented ID of the newly saved product
         $leave_id = $leave->id;
-
-        // Handle image upload if a file was uploaded
 
         $imageExtension = $request->file('documents')->extension();
         $docName = $leave_id . '.' . $imageExtension;
         $request->file('documents')->move(public_path('documents'), $docName);
 
-        // Update the product record with the correct image path
         $leave->documents = 'documents/' . $docName;
         $leave->save();
         return redirect()->route('leave.index', ['leaves' => $leaves]);
@@ -52,7 +47,7 @@ class LeaveController extends Controller
     public function details($id)
     {
         $leave = Leave::findOrFail($id);
-        $leave_types = Leave_Type::all();
+        $leave_types = Leave_type::all();
         return view('leaves.details', compact("leave", 'leave_types'));
     }
 

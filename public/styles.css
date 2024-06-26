@@ -1,33 +1,43 @@
-h2{
+h2 {
     font-weight: 700;
     font-size: 1.3rem;
 }
 
-.btn{
+.btn {
     padding: 10px 15px;
     border: black solid 1px;
     border-radius: 8px;
 
-    
-    &:hover{
-        cursor: pointer
+    &:hover {
+        cursor: pointer;
     }
 }
 
-.red{
+.red {
     background: red;
     color: white;
     font-weight: 700;
-    border: none;
+    border: none;    
+    border: red solid 1px;
+    transition: 300ms;
+    &:hover {
+        cursor: pointer;
+        background: none;
+        color: red;
+    }
 }
 
-.dlt{
+.dlt {
     border-color: #f00;
     color: #f00;
 
-    &:hover{
+    &:hover {
         cursor: pointer;
         background-color: red;
         color: white;
     }
+}
+
+[type=submit]:hover{
+    cursor: pointer;
 }
