@@ -92,8 +92,10 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Duties
         </h2>
-        @php if (auth()->user()->position == 'employee') {
-        $duties = $duties->where('user_id', auth()->user()->id); }
+        @php
+            if (auth()->user()->position == 'employee') {
+                $duties = $duties->where('user_id', auth()->user()->id);
+            }
         @endphp
     </x-slot>
 
@@ -111,7 +113,7 @@
         <script src="https://unpkg.com/tippy.js@6"></script>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 var calendarEl = document.getElementById('calendar');
                 var today = "{{ $date }}";
 
@@ -123,16 +125,17 @@
                         center: 'title',
                         right: ''
                     },
-                    dateClick: function (info) {
+                    dateClick: function(info) {
                         var dateStr = info.dateStr;
                         var url = "{{ route('duty.goto', ':date') }}".replace(':date', dateStr);
                         window.location.href = url;
                     },
                     events: [
-                        @foreach ($duties as $duty){
-                                title: '{{$duty->user_id}}',
+                        @foreach ($duties as $duty)
+                            {
+                                title: '{{ $duty->user_id }}',
                                 start: '{{ $duty->date }}',
-                                backgroundColor: '{{ $duty->remarks == null && $duty->start != null ? '#0f0' : ($duty->remarks == null && $duty->start == null ? '#fff' : '#f00')}}',
+                                backgroundColor: '{{ $duty->remarks == null && $duty->start != null ? '#0f0' : ($duty->remarks == null && $duty->start == null ? '#fff' : '#f00') }}',
                             },
                         @endforeach
                     ],
@@ -163,7 +166,7 @@
                             <h1 class="text-4xl font-semibold italic">
                                 {{ Carbon\Carbon::parse($date)->format('d F Y') }}
                             </h1>
-                            <a href="{{route('duty.index')}}" class="btn dlt mx-2 p-2">
+                            <a href="{{ route('duty.index') }}" class="btn dlt mx-2 p-2">
                                 Today
                             </a>
                         </div>
@@ -179,30 +182,32 @@
                     <div class="flex gap-5 border-b-2 p-3">
 
 
-                        <p class="flex"> <img src="{{asset('./icons/ic_clock_in.svg')}}" class="" alt="clock in"> -
+                        <p class="flex"> <img src="{{ asset('./icons/ic_clock_in.svg') }}" class=""
+                                alt="clock in"> -
                             Clock In </p>
-                        <p class="flex"> <img src="{{asset('./icons/ic_clock_out.svg')}}" alt="clock out"> - Clock Out
+                        <p class="flex"> <img src="{{ asset('./icons/ic_clock_out.svg') }}" alt="clock out"> - Clock
+                            Out
                         </p>
                     </div>
 
                     <!-- List Duty -->
 
                     <div class="flex flex-col  gap-3">
-                        @php                            
+                        @php
                             $groupedDuties = $duties->where('date', $date)->groupBy('duty_type.name');
                         @endphp
 
-                        @foreach($groupedDuties as $dutyType => $dutiesGroup)
+                        @foreach ($groupedDuties as $dutyType => $dutiesGroup)
                             <div>
                                 <strong>{{ $dutyType }}:</strong>
-                                @foreach($dutiesGroup as $duty)
+                                @foreach ($dutiesGroup as $duty)
                                     <div class="flex flex-col gap-1 my-2 p-2 border-gray-500 rounded-lg"
                                         style="border: 1px solid #aaa">
                                         <div class="flex my-1">
                                             <p> {{ $duty->user_id }} - {{ $duty->user->name }} </p>
                                             @if (auth()->user()->position == 'supervisor')
-
-                                                <form class="ml-3 btn dlt w-fit text-xs border-0 rounded-none p-1" method="POST"
+                                                <form class="ml-3 btn dlt w-fit text-xs border-0 rounded-none p-1"
+                                                    method="POST"
                                                     action="{{ route('duty.delete', ['id' => $duty->id]) }}">
                                                     @csrf
                                                     @method('DELETE')
@@ -212,26 +217,40 @@
                                         </div>
                                         <div class="flex gap-5">
                                             <div class="clock">
-                                                <img src="{{asset('./icons/ic_clock_in.svg')}}" class="m-1" alt="clock in">
+                                                <img src="{{ asset('./icons/ic_clock_in.svg') }}" class="m-1"
+                                                    alt="clock in">
 
-                                                <form action="{{ route('duty.clockin', ['duty_id' => $duty->id]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PUT')
+                                                @if (auth()->user()->position == 'employee')
+                                                    <form
+                                                        action="{{ route('duty.clockin', ['duty_id' => $duty->id]) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('PUT')
 
-                                                    <input type="submit"
-                                                        value="{{$duty->start == null ? "--:--" : $duty->start}}">
-                                                </form>
+                                                        <input type="submit"
+                                                            value="{{ $duty->start == null ? '--:--' : $duty->start }}">
+                                                    </form>
+                                                @else
+                                                    <div>{{ $duty->start == null ? '--:--' : $duty->start }}</div>
+                                                @endif
+
                                             </div>
                                             <div class="clock">
-                                                <img src="{{asset('./icons/ic_clock_out.svg')}}" class="m-1" alt="clock out">
-                                                <form action="{{ route('duty.clockout', ['duty_id' => $duty->id]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PUT')
+                                                <img src="{{ asset('./icons/ic_clock_out.svg') }}" class="m-1"
+                                                    alt="clock out">
+                                                @if (auth()->user()->position == 'employee')
+                                                    <form
+                                                        action="{{ route('duty.clockout', ['duty_id' => $duty->id]) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('PUT')
 
-                                                    <input type="submit" value="{{$duty->end == null ? "--:--" : $duty->end}}">
-                                                </form>
+                                                        <input type="submit"
+                                                            value="{{ $duty->end == null ? '--:--' : $duty->end }}">
+                                                    </form>
+                                                @else
+                                                    <div>{{ $duty->end == null ? '--:--' : $duty->end }}</div>
+                                                @endif
 
                                             </div>
                                         </div>
