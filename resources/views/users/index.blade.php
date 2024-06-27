@@ -46,8 +46,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div
-                class="bg-yellow-400 text-base overflow-hidden shadow-sm sm:rounded-lg flex flex-col items-center p-10">
+            <div class="bg-yellow-400 text-base overflow-hidden shadow-sm sm:rounded-lg flex flex-col items-center p-10">
 
                 <div class="grid grid-cols-1 w-full md:grid-cols-3" style="max-width:800px">
                     <div class="counters">
@@ -76,13 +75,12 @@
                     </div>
                 </div>
 
-                <form action="" class="w-full flex gap-3 p-6" style="max-width: 900px">
-                    <input class="w-full border-none rounded-lg" type="text">
-                    <input type="submit" class="btn red" value="search">
-                    <a href="{{route('user.addPage')}}" class=" text-nowrap btn red">Add New User</a>
-                </form>
+                @if (auth()->user()->position == 'admin')
+                    <a href="{{ route('user.addPage') }}" class=" text-nowrap btn red">Add New User</a>
+                @endif
 
-                <table>
+
+                <table class='mt-5'>
                     <thead>
                         <td class="w-min">No.</td>
                         <td class="w-min text-nowrap">IDs</td>
@@ -94,37 +92,36 @@
                     </thead>
                     <tbody>
                         <div class="hidden">
-                            <?= $counter=1 ?>
+                            <?= $counter = 1 ?>
                         </div>
                         @foreach ($users as $user)
                             <tr>
                                 <td>
                                     <?= $counter++ ?>
                                 </td>
-                                <td>{{$user->id}}</td>
-                                <td>{{$user->position}}</td>
-                                <td>{{$user->name}}</td>
-                                <td>{{$user->phone_no}}</td>
-                                <td>{{$user->email}}</td>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->position }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->phone_no }}</td>
+                                <td>{{ $user->email }}</td>
                                 <td class="p-3">
-                                    <a href="{{route('user.details', ['id' => $user->id])}}" class="btn red">
+                                    <a href="{{ route('user.details', ['id' => $user->id]) }}" class="btn red">
                                         Details
                                     </a>
                                 </td>
 
                                 <td class="p-3">
                                     @if (auth()->user()->position == 'admin')
-                                    <form class="w-fit" method="POST"
-                                        action="{{ route('user.delete', ['id' => $user->id]) }}">
+                                        <form class="w-fit" method="POST"
+                                            action="{{ route('user.delete', ['id' => $user->id]) }}">
 
-                                        @csrf
-                                        @method('DELETE')
-                                        <input class="btn dlt" type="submit" value="Remove">
-                                    </form>
+                                            @csrf
+                                            @method('DELETE')
+                                            <input class="btn dlt" type="submit" value="Remove">
+                                        </form>
                                     @endif
                                 </td>
                             </tr>
-
                         @endforeach
                     </tbody>
                 </table>

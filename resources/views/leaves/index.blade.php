@@ -56,12 +56,12 @@
                                 {{ $leaves->count() }}
                             </h1>
                             <p>
-                                Total Leave {{ date('Y') }}
+                                Approved Leave {{ date('Y') }}
                             </p>
                         </div>
                         <div class="counters mid-c">
                             <h1>
-                                {{ $leaves->where('status', 'supervisor')->count() }}
+                                {{ $leaves->where('status', 'Pending')->count() }}
                             </h1>
                             <p>
                                 Pending
@@ -69,7 +69,7 @@
                         </div>
                         <div class="counters">
                             <h1>
-                                {{ $leaves->where('status', 'employee')->count() }}
+                                {{ $leaves->where('status', 'Rejected')->count() }}
                             </h1>
                             <p>
                                 Rejected
@@ -78,10 +78,37 @@
                     </div>
                 @endif
 
-                @if (auth()->user()->position != 'admin')
-                    <a href="{{ route('leave.addPage') }}" class="btn red mb-5 font-medium">
-                        Request Leave
-                    </a>
+                @if (auth()->user()->position == 'employee')
+                    <div class="grid grid-cols-1 w-full md:grid-cols-3" style="max-width:800px">
+                        <div class="counters relative">
+                            <h1>
+                                {{ auth()->user()->leave_remaining }}
+                            </h1>
+                            <p class="pb-5">
+                                Balance Leave Left {{ date('Y') }}
+                            </p>
+                            <a href="{{ route('leave.addPage') }}" styles="transform: translateY(20%)"
+                                class="absolute bottom-0 btn red font-medium">
+                                Request Leave
+                            </a>
+                        </div>
+                        <div class="counters mid-c">
+                            <h1>
+                                {{ $leaves->where('status', 'Pending')->where('user_id', auth()->user()->id)->count() }}
+                            </h1>
+                            <p>
+                                Pending
+                            </p>
+                        </div>
+                        <div class="counters">
+                            <h1>
+                                {{ $leaves->where('status', 'Approved')->where('user_id', auth()->user()->id)->count() }}
+                            </h1>
+                            <p>
+                                Approved
+                            </p>
+                        </div>
+                    </div>
                 @endif
 
 
