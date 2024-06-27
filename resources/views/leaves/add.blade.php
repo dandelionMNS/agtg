@@ -80,7 +80,7 @@
                             <div id="file-name" style="display:none; padding:20px; color: black;"></div>
                         </label>
                         <input type="file" id="documents" name="documents" accept="image/*,.pdf"
-                            onchange="previewFile(event)" style="padding:5px; margin:5px; display:none">
+                            onchange="previewFile(event)" style="padding:5px; margin:5px; display:block" required>
                     </div>
 
                     <div>

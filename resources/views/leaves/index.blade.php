@@ -47,8 +47,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div
-                class="bg-yellow-400 text-base overflow-hidden shadow-sm sm:rounded-lg flex flex-col items-center p-10">
+            <div class="bg-yellow-400 text-base overflow-hidden shadow-sm sm:rounded-lg flex flex-col items-center p-10">
 
                 @if (auth()->user()->position != 'employee')
                     <div class="grid grid-cols-1 w-full md:grid-cols-3" style="max-width:800px">
@@ -80,8 +79,7 @@
                 @endif
 
                 @if (auth()->user()->position != 'admin')
-
-                    <a href="{{route('leave.addPage')}}" class="btn red mb-5 font-medium">
+                    <a href="{{ route('leave.addPage') }}" class="btn red mb-5 font-medium">
                         Request Leave
                     </a>
                 @endif
@@ -101,7 +99,7 @@
                     </thead>
                     <tbody>
                         <div class="hidden">
-                            <?= $counter=1 ?>
+                            <?= $counter = 1 ?>
                         </div>
                         @foreach ($leaves as $leave)
                             @if (auth()->user()->position == 'admin' || auth()->user()->position == 'supervisor')
@@ -109,17 +107,17 @@
                                     <td>
                                         <?= $counter++ ?>
                                     </td>
-                                    <td>{{$leave->user->name}}</td>
-                                    <td>{{$leave->leave_type->name}}</td>
+                                    <td>{{ $leave->user->name }}</td>
+                                    <td>{{ $leave->leave_type->name }}</td>
                                     <td>{{ \Carbon\Carbon::parse($leave->start)->format('d M Y') }}</td>
                                     @if ($leave->start == $leave->end)
                                         <td>-</td>
                                     @else
                                         <td>{{ \Carbon\Carbon::parse($leave->end)->format('d M Y') }}</td>
                                     @endif
-                                    <td>{{$leave->status}}</td>
+                                    <td>{{ $leave->status }}</td>
                                     <td class="p-3">
-                                        <a href="{{route('leave.details', ['id' => $leave->id])}}" class="btn red">
+                                        <a href="{{ route('leave.details', ['id' => $leave->id]) }}" class="btn red">
                                             Details
                                         </a>
                                     </td>
@@ -135,37 +133,37 @@
                                         </form>
                                     </td>
                                 </tr>
-
                             @else
-                                @if ((auth()->user()->id == $leave->user->id))
-
+                                @if (auth()->user()->id == $leave->user->id)
                                     <tr>
                                         <td>
                                             <?= $counter++ ?>
                                         </td>
-                                        <td>{{$leave->leave_type->name}}</td>
+                                        <td>{{ $leave->leave_type->name }}</td>
                                         <td>{{ \Carbon\Carbon::parse($leave->start)->format('d M Y') }}</td>
                                         @if ($leave->start == $leave->end)
                                             <td>-</td>
                                         @else
                                             <td>{{ \Carbon\Carbon::parse($leave->end)->format('d M Y') }}</td>
                                         @endif
-                                        <td>{{$leave->status}}</td>
+                                        <td>{{ $leave->status }}</td>
                                         <td class="p-3">
-                                            <a href="{{route('leave.details', ['id' => $leave->id])}}" class="btn red">
+                                            <a href="{{ route('leave.details', ['id' => $leave->id]) }}"
+                                                class="btn red">
                                                 Details
                                             </a>
                                         </td>
 
                                         <td class="p-3">
+                                            @if ($leave->status != 'Approved')
+                                                <form class="w-fit" method="POST"
+                                                    action="{{ route('leave.delete', ['id' => $leave->id]) }}">
 
-                                            <form class="w-fit" method="POST"
-                                                action="{{ route('leave.delete', ['id' => $leave->id]) }}">
-
-                                                @csrf
-                                                @method('DELETE')
-                                                <input class="btn dlt" type="submit" value="Remove">
-                                            </form>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input class="btn dlt" type="submit" value="Remove">
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endif

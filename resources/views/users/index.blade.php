@@ -113,7 +113,7 @@
                                 </td>
 
                                 <td class="p-3">
-
+                                    @if (auth()->user()->position == 'admin')
                                     <form class="w-fit" method="POST"
                                         action="{{ route('user.delete', ['id' => $user->id]) }}">
 
@@ -121,6 +121,7 @@
                                         @method('DELETE')
                                         <input class="btn dlt" type="submit" value="Remove">
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
 

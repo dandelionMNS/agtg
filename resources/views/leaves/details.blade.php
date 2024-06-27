@@ -135,8 +135,14 @@
 
 
                     <div class="flex justify-center w-full pt-3" style="flex-direction: row">
+
+                        @if(auth()->user()->position == 'employee' && $leave->status == "Approved")
+
+                        @else                    
                         <input class="btn red" style="padding: 10px 20px !important;" type="submit"
                             value="Update Leave">
+
+                        @endif
                     </div>
                 </form>
             </div>

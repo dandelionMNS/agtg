@@ -11,13 +11,18 @@ class Duty extends Model
 
     protected $fillable = [
         "user_id",
-        "duty",
+        "duty_type_id",
         "date",
-        "attendance",
+        "start",
+        "end",
+        'remarks',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+    public function duty_type(){
+        return $this->belongsTo(Duty_type::class);
     }
 
 }
