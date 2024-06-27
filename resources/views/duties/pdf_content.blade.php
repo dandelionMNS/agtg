@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Invoice for order: {{$order->id}}</title>
+    <title>Monthly Report: {{ $month . ' ' . $year }}</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -57,42 +57,94 @@
 
 <body>
     <div class="header">
-        <h2>Invoice for order: {{$order->id}}</h2>
+        <h2>Monthly Reports for : {{ $month . ' / ' . $year }}</h2>
     </div>
 
-    <!-- User details -->
+    User details
     <div class="details">
-        <p><strong>Name:</strong> {{$user->name}}</p>
-        <p><strong>Email:</strong> {{$user->email}}</p>
-        <p><strong>Address:</strong> {{$user->address}}</p>
-        <p><strong>Phone No:</strong> {{$user->phone_no}}</p>
+        <p><strong>Name:</strong> {{ $user->name }}</p>
+        <p><strong>Email:</strong> {{ $user->email }}</p>
+        <p><strong>Phone No:</strong> {{ $user->phone_no }}</p>
+        <p><strong>Position:</strong> {{ $user->position }}</p>
     </div>
 
-    <!-- Order items -->
-    <table class="order-table">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Product Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($order_items as $index => $item)
-                <tr>
-                    <td>{{$index + 1}}.</td>
-                    <td>{{$item->prod_title}}</td>
-                    <td>{{$item->quantity}}</td>
-                    <td>{{$item->price_per_item}}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <h3 class="my-3 text-center w-full">Duty Records<h3>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Date</th>
+                        <th>Duty</th>
+                        <th>Clock in</th>
+                        <th>Clock out</th>
+                        <th>Remarks</th>
+                        <th>Working hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $totalDuration = 0;
+                    @endphp
+                    @foreach ($duties as $index => $duty)
+                        <tr>
+                            <td>{{ $index + 1 }}.</td>
+                            <td>{{ $duty->date }}</td>
+                            <td>{{ $duty->duty_type->name }}</td>
+                            <td>{{ $duty->start }}</td>
+                            <td>{{ $duty->end }}</td>
+                            <td>{{ $duty->remarks }}</td>
+                            <td>{{ $duty->formatted_duration }}</td>
+                        </tr>
 
-    <div class="total-price">
-        <strong>Total Price:</strong> RM {{$order->total_price}}
-    </div>
+                        @php
+                            $totalDuration += $duty->duration;
+                        @endphp
+                    @endforeach
+
+                </tbody>
+            </table>
+
+            <div class="total-price">
+                <strong>Total Hours Worked:</strong> {{ sprintf('%02d hours, %02d minutes', $totalHours, $totalMinutes) }}
+            </div>
+
+
+            <h3 class="my-3 text-center w-full">Leave Records<h3>
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Leave Type</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $totalLeave = 0;
+                            @endphp
+                            @foreach ($leaves as $index => $leave)
+                                <tr>
+                                    <td>{{ $index + 1 }}.</td>
+                                    <td>{{ $leave->leave_type->name }}</td>
+                                    <td>{{ $leave->start }}</td>
+                                    <td>{{ $leave->end }}</td>
+                                    <td>{{ $leave->status }}</td>
+                                </tr>
+
+                                @php
+                                    $totalLeave += $duty->leaved;
+                                @endphp
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                    <div class="total-price">
+                        <strong>Total Leave:</strong> {{ $totalLeaveDays }} days
+                    </div>
+
+
 </body>
 
 </html>

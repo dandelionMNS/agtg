@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Leave;
+use App\Models\User;
 use App\Models\Leave_type;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class LeaveController extends Controller
 {
@@ -52,10 +54,12 @@ class LeaveController extends Controller
     }
 
 
+
+
     public function update(Request $request, $id)
     {
         $leave = Leave::findOrFail($id);
-        
+    
         $leave->user_id = $request->input('user_id');
         $leave->leave_type_id = $request->input('type');
         $leave->start = $request->input('start');
@@ -81,8 +85,35 @@ class LeaveController extends Controller
     
         $leave->save();
     
+        // Find all leaves of the user that are approved and within the same year as the current leave's start date
+        $startYear = Carbon::parse($leave->start)->year;
+        $leaves = Leave::where('user_id', $leave->user_id)
+                       ->where('status', "Approved")
+                       ->whereYear('start', $startYear)
+                       ->get();
+    
+        // Calculate the total number of leave days
+        $totalLeaveDays = 0;
+    
+        foreach ($leaves as $l) {
+            $start = Carbon::parse($l->start);
+            $end = Carbon::parse($l->end);
+            $days = $start->diffInDays($end) + 1;
+            $totalLeaveDays += $days;
+        }
+    
+        // Assuming the total leave allowance is 20 days
+        $leaveAllowance = 20;
+        $balanceDays = $leaveAllowance - $totalLeaveDays;
+    
+        // Update the user's remaining leave days
+        $user = User::findOrFail($leave->user_id);
+        $user->leave_remaining = $balanceDays;
+        $user->save();
+    
         return redirect()->route('leave.details', ['id' => $leave->id]);
     }
+    
     
 
     public function delete($id)

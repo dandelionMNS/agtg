@@ -72,7 +72,11 @@ class DutyController extends Controller
         $startTime = Carbon::parse($duty->start);
         $endTime = Carbon::parse($duty->end);
 
-        $duration = $startTime->diffInHours($endTime);
+        // $duration = $startTime->diffInHours($endTime);
+        $durationInMinutes = $startTime->diffInMinutes($endTime);
+        $hours = floor($durationInMinutes / 60);
+        $minutes = $durationInMinutes % 60;
+        $duration = sprintf('%02d:%02d', $hours, $minutes);
 
         $remarks = '';
 

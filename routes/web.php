@@ -54,5 +54,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/duty/{id}/delete', [DutyController::class, 'delete'])->middleware(['auth', 'verified'])->name('duty.delete');
 }
 
+//Monthly Record
+{
+    Route::get('/monthly-record/{id}', [UserController::class, 'monthly_record'])->name('monthly_record');
+}
 
 require __DIR__ . '/auth.php';

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Leave;
 use App\Models\User;
+use App\Models\Duty;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class UserController extends Controller
 {
@@ -78,17 +81,51 @@ class UserController extends Controller
         return redirect()->route('user.index');
 
     }
-    public function monthly_rec($date)
+
+    public function monthly_record($id, Request $request)
     {
-        $duties = Duty::whereMonth('date', Carbon::parse($date)->month)
+        $date = $request->input('date');
+
+        $duties = Duty::where('user_id', $id)
+            ->whereMonth('date', Carbon::parse($date)->month)
             ->whereYear('date', Carbon::parse($date)->year)
             ->get();
 
+        $user = User::findOrFail($id);
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
 
-        $pdf = PDF::loadView('duty.pdf_content', compact('duties', 'month', 'year'));
-        $filename = 'monthly_duties_' . Carbon::parse($month)->format('Y-m') . '.pdf';
+        foreach ($duties as $duty) {
+            $startTime = Carbon::parse($duty->start);
+            $endTime = Carbon::parse($duty->end);
+            $durationInMinutes = $startTime->diffInMinutes($endTime);
+            $hours = floor($durationInMinutes / 60);
+            $minutes = $durationInMinutes % 60;
+            $duty->formatted_duration = sprintf('%02d:%02d', $hours, $minutes);
+            $duty->total_minutes = $durationInMinutes;
+        }
+
+        $totalDurationInMinutes = $duties->sum('total_minutes');
+        $totalHours = floor($totalDurationInMinutes / 60);
+        $totalMinutes = $totalDurationInMinutes % 60;
+
+        $leaves = Leave::where('user_id', $id)
+            ->where('status', 'Approved')
+            ->whereMonth('start', Carbon::parse($date)->month)
+            ->whereYear('start', Carbon::parse($date)->year)
+            ->get();
+
+        $totalLeaveDays = 0;
+        foreach ($leaves as $leave) {
+            $start = Carbon::parse($leave->start);
+            $end = Carbon::parse($leave->end);
+            $days = $start->diffInDays($end) + 1;
+            $totalLeaveDays += $days;
+        }
+
+        $pdf = PDF::loadView('duties.pdf_content', compact('user', 'duties', 'month', 'year', 'leaves', 'totalLeaveDays', 'totalHours', 'totalMinutes'));
+        $filename = 'monthly_duties_' . Carbon::parse($date)->format('Y-m') . '.pdf';
         return $pdf->download($filename);
     }
+
 }
