@@ -48,7 +48,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-yellow-400 text-base overflow-hidden shadow-sm sm:rounded-lg flex flex-col items-center p-10">
-
+                <div class="w-full relative" style='height:40px'>
+                    <a class="btn red absolute left" href="{{ route('dashboard') }}"><img
+                            src="{{ asset('./icons/ic_left.svg') }}"></a>
+                </div>
                 @if (auth()->user()->position != 'employee')
                     <div class="grid grid-cols-1 w-full md:grid-cols-3" style="max-width:800px">
                         <div class="counters">
@@ -151,11 +154,11 @@
 
                                     <td class="p-3">
 
-                                        <form class="w-fit" method="POST"
+                                        <form class="w-fit" method="POST" onsubmit="showAlert(event)" id='theform'
                                             action="{{ route('leave.delete', ['id' => $leave->id]) }}">
 
                                             @csrf
-                                            @method('DELETE')
+                                            @method('DELETE') 
                                             <input class="btn dlt" type="submit" value="Remove">
                                         </form>
                                     </td>
@@ -183,7 +186,7 @@
 
                                         <td class="p-3">
                                             @if ($leave->status != 'Approved')
-                                                <form class="w-fit" method="POST"
+                                                <form class="w-fit" method="POST" onsubmit="showAlert(event)" id='theform'
                                                     action="{{ route('leave.delete', ['id' => $leave->id]) }}">
 
                                                     @csrf
@@ -201,4 +204,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function showAlert(event) {
+            event.preventDefault();
+            alert('Leave Request has been deleted!');
+            document.getElementById('theform').submit();
+        }
+    </script>
 </x-app-layout>

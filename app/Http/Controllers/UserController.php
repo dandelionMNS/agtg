@@ -32,6 +32,7 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->position = $request->input('position');
         $user->phone_no = $request->input('phone_no');
+        $user->gender = $request->input('gender');
         $user->address = $request->input('address');
         $user->age = $request->input('age');
         $user->leave_remaining = $request->input('leave_remaining');
@@ -64,6 +65,7 @@ class UserController extends Controller
         $user->position = $request->input('position');
         $user->phone_no = $request->input('phone_no');
         $user->address = $request->input('address');
+        $user->gender = $request->input('gender');
         $user->age = $request->input('age');
         $user->leave_remaining = $request->input('leave_remaining');
         $user->save();

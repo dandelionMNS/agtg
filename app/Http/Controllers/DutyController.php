@@ -27,8 +27,9 @@ class DutyController extends Controller
     public function addPage($date)
     {
         $users = User::where('position', 'employee')->get();
+        $duties = Duty::all();
         $duty_types = Duty_Type::all();
-        return view("duties.add", compact('duty_types', 'users', 'date'));
+        return view("duties.add", compact('duty_types', 'duties', 'users', 'date'));
     }
 
     public function add(Request $request)

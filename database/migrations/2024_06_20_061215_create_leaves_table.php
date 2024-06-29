@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('leave_type_id')->constrained('leave_types');
+            $table->string('reason')->nullable();
             $table->string('documents')->nullable();
             $table->date('start');
             $table->date('end');

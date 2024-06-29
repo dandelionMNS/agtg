@@ -17,13 +17,9 @@ INSERT INTO `leave_types` (`id`, `name`) VALUES
 (4, 'Maternity Leave'),
 (5, 'Marriage Leave');
 
-INSERT INTO `leaves` (`id`, `user_id`, `leave_type_id`, `documents`, `start`, `end`, `status`, `created_at`, `updated_at`) VALUES
-(21, 2, 1, 'documents/21.pdf', '2024-06-01', '2024-06-01', 'Approved', '2024-06-23 17:14:17', '2024-06-25 00:01:24'),
-(22, 2, 1, 'documents/22.jpg', '2024-06-01', '2024-07-06', 'Rejected', '2024-06-23 17:14:36', '2024-06-25 00:01:09');
 
-INSERT INTO `duty_types` (`id`, `name`) VALUES
-(1, 'Cashier '),
-(2, 'Waiter '),
-(3, 'Kitchen helper'),
-(4, 'Drink maker');
-
+INSERT INTO `duty_types` (`id`, `name`,`countwd`,`countwe`) VALUES
+(1, 'Cashier ',1, 1),
+(2, 'Waiter ',2,3),
+(3, 'Kitchen helper',3,4),
+(4, 'Drink maker',2,2);

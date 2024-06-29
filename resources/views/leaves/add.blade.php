@@ -41,20 +41,20 @@
             <div class="bg-white flex items-center flex-col p-5 shadow-sm sm:rounded-lg">
 
                 <div class="w-full relative ">
-                    <a class="btn red absolute left" href="{{route('leave.index')}}"><img
-                            src="{{asset('./icons/ic_left.svg')}}"></a>
+                    <a class="btn red absolute left" href="{{ route('leave.index') }}"><img
+                            src="{{ asset('./icons/ic_left.svg') }}"></a>
                 </div>
 
                 <form class="user-form w-full lg:w-1/2 flex flex-col p-5" method="POST"
-                    action="{{ route('leave.add')}}" enctype="multipart/form-data">
+                    action="{{ route('leave.add') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div>
-                        <input type="hidden" id="user_id" name="user_id" value="{{auth()->user()->id}}" required>
+                        <input type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}" required>
                         <label>
                             Name:
                         </label>
-                        <input type="text" value="{{auth()->user()->name}}" disabled>
+                        <input type="text" value="{{ auth()->user()->name }}" disabled>
                     </div>
 
                     <div>
@@ -63,9 +63,17 @@
                         </label>
                         <select class="input" id="type" name="type" required>
                             @foreach ($leave_types as $leave_type)
-                                <option value="{{$leave_type->id}}">{{$leave_type->name}}</option>
+                                <option value="{{ $leave_type->id }}">{{ $leave_type->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div>
+                        <input type="hidden" id="reason" name="reason" required>
+                        <label>
+                            Leave Reason:
+                        </label>
+                        <textarea name='reason' placeholder="description"></textarea>
                     </div>
 
 
@@ -124,7 +132,7 @@
 
                 if (fileType.startsWith('image/')) {
                     var reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         imagePreviewDiv.style.display = 'block';
                         previewImg.src = e.target.result;
                         previewImg.style.display = 'block';

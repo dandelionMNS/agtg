@@ -39,24 +39,25 @@
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white flex items-center flex-col p-5 shadow-sm sm:rounded-lg">
-                <h2>LeaveID: {{$leave->id}}</h2>
+
+                <h2>LeaveID: {{ $leave->id }}</h2>
                 <div class="w-full relative ">
-                    <a class="btn red absolute left" href="{{route('leave.index')}}">
-                        <img src="{{asset('./icons/ic_left.svg')}}">
+                    <a class="btn red absolute left" href="{{ route('leave.index') }}">
+                        <img src="{{ asset('./icons/ic_left.svg') }}">
                     </a>
                 </div>
 
-                <form class="user-form w-full lg:w-1/2 flex flex-col p-5" method="POST"
-                    action="{{ route('leave.update', ['id' => $leave->id])}}" enctype="multipart/form-data">
+                <form class="user-form w-full lg:w-1/2 flex flex-col p-5" method="POST" onsubmit="showAlert(event)" id='theform'
+                    action="{{ route('leave.update', ['id' => $leave->id]) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
                     <div>
-                        <input type="hidden" id="user_id" name="user_id" value="{{$leave->user_id}}" required>
+                        <input type="hidden" id="user_id" name="user_id" value="{{ $leave->user_id }}" required>
                         <label>
                             Name:
                         </label>
-                        <input type="text" value="{{$leave->user->name}}" disabled>
+                        <input type="text" value="{{ $leave->user->name }}" disabled>
                     </div>
 
                     <div>
@@ -65,9 +66,19 @@
                         </label>
                         <select class="input" id="type" name="type" required>
                             @foreach ($leave_types as $leave_type)
-                                <option value="{{$leave_type->id}}" {{ $leave->leave_type_id == $leave_type->id ? 'selected' : '' }}>{{$leave_type->name}}</option>
+                                <option value="{{ $leave_type->id }}"
+                                    {{ $leave->leave_type_id == $leave_type->id ? 'selected' : '' }}>
+                                    {{ $leave_type->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div>
+                        <input type="hidden" id="reason" name="reason" required>
+                        <label>
+                            Leave Reason:
+                        </label>
+                        <textarea name='reason' placeholder="description">{{ $leave->reason }}</textarea>
                     </div>
 
 
@@ -79,10 +90,11 @@
                             @endif
 
                             @if (Str::contains($leave->documents, '.pdf'))
-                                <p class="p-3">{{$leave->documents}}</p>
+                                <p class="p-3">{{ $leave->documents }}</p>
                             @else
                                 <div id="image-preview" class="my-30 mx-auto" style="margin:10px; padding:0;">
-                                    <img id="preview" src="{{asset($leave->documents)}}" alt="{{$leave->documents}}"
+                                    <img id="preview" src="{{ asset($leave->documents) }}"
+                                        alt="{{ $leave->documents }}"
                                         style="width: 100%; max-width: 100px; max-height: 100px; ">
                                 </div>
                             @endif
@@ -90,20 +102,23 @@
                         </label>
                         @if (Str::contains($leave->documents, '.pdf'))
                             <p>
-                                Click <a href="{{asset($leave->documents)}}" class="underline text-blue-700 w-0"
+                                Click <a href="{{ asset($leave->documents) }}" class="underline text-blue-700 w-0"
                                     download>here</a> to download
                             </p>
                         @endif
 
- 
-                        @if (auth()->user()->position == "employee")
-                        <input type="hidden" name="status" value="Pending" >
+
+                        @if (auth()->user()->position == 'employee')
+                            <input type="hidden" name="status" value="Pending">
                         @endif
 
 
                         <input type="file" id="documents" name="documents" accept="image/*,.pdf"
-                            onchange="previewFile(event)" value="{{$leave->documents}}"
-                            style="padding:5px; margin:5px; display:none">
+                            onchange="previewFile(event)" value="{{ $leave->documents }}"
+                            style="padding:5px; margin:5px; display:none"
+                            {{ auth()->user()->position == 'employee' ? '' : 'disabled' }}>
+
+
                     </div>
 
 
@@ -111,24 +126,25 @@
                         <label for="start">
                             Start Date:
                         </label>
-                        <input type="date" id="start" name="start" value="{{$leave->start}}" required>
+                        <input type="date" id="start" name="start" value="{{ $leave->start }}" required>
                     </div>
 
                     <div>
                         <label for="end">
                             End Date:
                         </label>
-                        <input type="date" id="end" name="end" value="{{$leave->end}}" required>
+                        <input type="date" id="end" name="end" value="{{ $leave->end }}" required>
                     </div>
 
                     @if (auth()->user()->position == 'admin' || auth()->user()->position == 'supervisor')
-
                         <label for="status">
                             Status:
                         </label>
                         <select class="input" id="status" name="status" required>
-                            <option value="Approved" {{ $leave->status == 'Approved' ? 'selected' : '' }}>Approved</option>
-                            <option value="Rejected" {{ $leave->status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                            <option value="Approved" {{ $leave->status == 'Approved' ? 'selected' : '' }}>Approved
+                            </option>
+                            <option value="Rejected" {{ $leave->status == 'Rejected' ? 'selected' : '' }}>Rejected
+                            </option>
 
                         </select>
                     @endif
@@ -136,12 +152,10 @@
 
                     <div class="flex justify-center w-full pt-3" style="flex-direction: row">
 
-                        @if(auth()->user()->position == 'employee' && $leave->status == "Approved")
-
-                        @else                    
-                        <input class="btn red" style="padding: 10px 20px !important;" type="submit"
-                            value="Update Leave">
-
+                        @if (auth()->user()->position == 'employee' && $leave->status == 'Approved')
+                        @else
+                            <input class="btn red" style="padding: 10px 20px !important;" type="submit"
+                                value="Update Leave">
                         @endif
                     </div>
                 </form>
@@ -167,7 +181,7 @@
 
                 if (fileType.startsWith('image/')) {
                     var reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         imagePreviewDiv.style.display = 'block';
                         previewImg.src = e.target.result;
                         previewImg.style.display = 'block';
@@ -184,4 +198,12 @@
             }
         }
     </script>
+    <script>
+        function showAlert(event) {
+            event.preventDefault();
+            alert('Form submitted successfully!');
+            document.getElementById('theform').submit();
+        }
+    </script>
+
 </x-app-layout>

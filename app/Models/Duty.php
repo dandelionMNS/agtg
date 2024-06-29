@@ -25,4 +25,8 @@ class Duty extends Model
         return $this->belongsTo(Duty_type::class);
     }
 
+    public static function countDuties($date, $dutyTypeId) {
+        return self::where('date', $date)->where('duty_type_id', $dutyTypeId)->count();
+    }
+
 }
