@@ -36,8 +36,8 @@
                                 src="{{ asset('./icons/ic_left.svg') }}"></a>
                     </div>
 
-                    <form class="user-form w-full lg:w-1/2 flex flex-col p-5" method="POST"
-                        action="{{ route('user.update', ['id' => $user->id]) }}">
+                    <form class="user-form w-full lg:w-1/2 flex flex-col p-5" method="POST" onsubmit="showAlert1(event)"
+                        id='updateAlert' action="{{ route('user.update', ['id' => $user->id]) }}">
                         @csrf
                         @method('PUT')
                     @else()
@@ -46,8 +46,7 @@
                                 <a class="btn red absolute left" href="{{ route('user.index') }}"><img
                                         src="{{ asset('./icons/ic_left.svg') }}"></a>
                             </div>
-
-                            @else
+                        @else
                             <div class="w-full relative ">
                                 <a class="btn red absolute left" href="{{ route('dashboard') }}"><img
                                         src="{{ asset('./icons/ic_left.svg') }}"></a>
@@ -146,7 +145,8 @@
 
                     </form>
                     <div class="flex gap-5 relative w-full justify-center">
-                        <form class="w-fit" method="POST" action="{{ route('user.delete', ['id' => $user->id]) }}">
+                        <form class="w-fit" method="POST" action="{{ route('user.delete', ['id' => $user->id]) }}"
+                            onsubmit="showAlert(event)" id='deleteAlert'>
                             @csrf
                             @method('DELETE')
                             <input class="btn dlt" type="submit" value="Remove User">
@@ -173,4 +173,20 @@
         </div>
     </div>
     </div>
+
+
+    <script>
+        function showAlert(event) {
+            event.preventDefault();
+            alert('User removed!');
+            document.getElementById('deleteAlert').submit();
+        }
+    </script>
+    <script>
+        function showAlert1(event) {
+            event.preventDefault();
+            alert('User updated!');
+            document.getElementById('updateAlert').submit();
+        }
+    </script>
 </x-app-layout>

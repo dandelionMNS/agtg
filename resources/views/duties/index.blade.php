@@ -159,7 +159,7 @@
                             <a class="btn red absolute left" href="{{ route('dashboard') }}"><img
                                     src="{{ asset('./icons/ic_left.svg') }}"></a>
                         </div>
-                        
+
                         <div id='calendar' class="w-full p-10 m-0 rounded-lg"></div>
                     </div>
                 </div>
@@ -212,7 +212,7 @@
                                             <p> {{ $duty->user_id }} - {{ $duty->user->name }} </p>
                                             @if (auth()->user()->position == 'supervisor')
                                                 <form class="ml-3 btn dlt w-fit text-xs border-0 rounded-none p-1"
-                                                    method="POST"
+                                                    method="POST" onsubmit="showAlert(event)" id='theform'
                                                     action="{{ route('duty.delete', ['id' => $duty->id]) }}">
                                                     @csrf
                                                     @method('DELETE')
@@ -270,4 +270,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function showAlert(event) {
+            event.preventDefault();
+            alert('Assigned duty has been removed!');
+            document.getElementById('theform').submit();
+        }
+    </script>
 </x-app-layout>
