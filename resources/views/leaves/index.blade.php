@@ -48,7 +48,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-yellow-400 text-base overflow-hidden shadow-sm sm:rounded-lg flex flex-col items-center p-10">
-
+                <div class="w-full relative" style='height:40px'>
+                    <a class="btn red absolute left" href="{{ route('dashboard') }}"><img
+                            src="{{ asset('./icons/ic_left.svg') }}"></a>
+                </div>
                 @if (auth()->user()->position != 'employee')
                     <div class="grid grid-cols-1 w-full md:grid-cols-3" style="max-width:800px">
                         <div class="counters">

@@ -39,6 +39,7 @@
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white flex items-center flex-col p-5 shadow-sm sm:rounded-lg">
+                
                 <h2>LeaveID: {{$leave->id}}</h2>
                 <div class="w-full relative ">
                     <a class="btn red absolute left" href="{{route('leave.index')}}">

@@ -154,9 +154,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex flex-wrap gap-1 text-base shadow-sm sm:rounded-lg">
                 <div class="w-2/3 relative">
-                    <div id='calendar' class="w-full bg-white p-10 m-0 rounded-lg"></div>
-                    <!-- <a class=" absolute top-10 right-10 py-2 px-3 rounded-md" route=""
-                        style="transform: translate(-5%, 0); color:white; background: #2c3e50;">Monthly Record</a> -->
+                    <div class="flex flex-col bg-white p-5">
+                        <div class="w-full relative" style='height:40px'>
+                            <a class="btn red absolute left" href="{{ route('dashboard') }}"><img
+                                    src="{{ asset('./icons/ic_left.svg') }}"></a>
+                        </div>
+                        
+                        <div id='calendar' class="w-full p-10 m-0 rounded-lg"></div>
+                    </div>
                 </div>
 
 

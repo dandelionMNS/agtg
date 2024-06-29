@@ -41,6 +41,18 @@
                         @csrf
                         @method('PUT')
                     @else()
+                        @if (auth()->user()->position == 'supervisor')
+                            <div class="w-full relative ">
+                                <a class="btn red absolute left" href="{{ route('user.index') }}"><img
+                                        src="{{ asset('./icons/ic_left.svg') }}"></a>
+                            </div>
+
+                            @else
+                            <div class="w-full relative ">
+                                <a class="btn red absolute left" href="{{ route('dashboard') }}"><img
+                                        src="{{ asset('./icons/ic_left.svg') }}"></a>
+                            </div>
+                        @endif
                         <form class="user-form w-full lg:w-1/2 flex flex-col p-5">
                 @endif
 
