@@ -14,6 +14,7 @@ class Leave extends Model
         "documents",
         "start",
         "end",
+        'reason',
         "status",
     ] ;
 

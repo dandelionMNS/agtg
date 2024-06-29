@@ -96,10 +96,10 @@
                     <label for="gender">
                         Gender:
                     </label>
-                    <select class="input" id="user_type" name="user_type" required
+                    <select class="input" id="gender" name="gender" required
                         {{ auth()->user()->position != 'admin' ? 'disabled' : '' }}>
                         <option value="male" {{ $user->gender == 'male' ? 'selected' : '' }}>Male</option>
-                        <option value="femalte" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                        <option value="female" {{ $user->gender == 'female' ? 'selected' : '' }}>Female</option>
                     </select>
                 </div>
 

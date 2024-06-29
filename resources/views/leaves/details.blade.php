@@ -70,6 +70,14 @@
                         </select>
                     </div>
 
+                    <div>
+                        <input type="hidden" id="reason" name="reason" required>
+                        <label>
+                            Leave Reason:
+                        </label>
+                        <textarea name='reason' placeholder="description">{{$leave->reason}}</textarea>
+                    </div>
+
 
                     <div class="my-30 mx-auto flex flex-col" style="margin:10px; color: grey">
                         Attachment
@@ -103,7 +111,9 @@
 
                         <input type="file" id="documents" name="documents" accept="image/*,.pdf"
                             onchange="previewFile(event)" value="{{$leave->documents}}"
-                            style="padding:5px; margin:5px; display:none">
+                            style="padding:5px; margin:5px; display:none" {{auth()->user()->position == 'employee' ? "" : "disabled"}}>
+
+
                     </div>
 
 

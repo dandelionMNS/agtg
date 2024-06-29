@@ -29,6 +29,7 @@ class LeaveController extends Controller
         $leave->user_id = $request->input('user_id');
         $leave->leave_type_id = $request->input('type');
         $leave->start = $request->input('start');
+        $leave->reason = $request->input('reason');
         $leave->end = $request->input('end');
         $leave->status = 'Pending';
         $leave->save();
@@ -64,6 +65,7 @@ class LeaveController extends Controller
         $leave->leave_type_id = $request->input('type');
         $leave->start = $request->input('start');
         $leave->end = $request->input('end');
+        $leave->reason = $request->input('reason');
         $leave->status = $request->input('status');
     
         if ($request->hasFile('documents')) {

@@ -81,9 +81,9 @@
                         <label for="gender">
                             Gender:
                         </label>
-                        <select class="input" id="user_type" name="user_type" required>
+                        <select class="input" id="gender" name="gender" required>
                             <option value="male" >Male</option>
-                            <option value="femalte">Female</option>
+                            <option value="female">Female</option>
                         </select>
                     </div>
 
