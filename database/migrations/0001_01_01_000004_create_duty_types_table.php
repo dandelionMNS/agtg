@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('duty_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('countwd');
+            $table->integer('countwe');
         });
     }
 
